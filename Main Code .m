@@ -180,7 +180,7 @@ elseif operation == 4  % Expanding the signal.
     grid on;
     % Plot the expanded signal.
     subplot(2,1,2);
-    plot(t,x_expanded);
+    plot(t_new,x_expanded);
     title('Time Expanded signal');
     xlabel('Time');
     ylabel('Amplitude');
@@ -189,8 +189,7 @@ elseif operation == 4  % Expanding the signal.
 elseif operation == 5 % Compressing the signal.
     % Ask user to enter a compressing value.
     compression = input('Enter the compressing value: ');
-    % Compress the signal
-    x_compressed = x( Start_time : compression : End_time);
+	t_new = t / compression ;
     % Plot the original signal.
     subplot(2,1,1);
     plot(t,x);
@@ -200,7 +199,7 @@ elseif operation == 5 % Compressing the signal.
     grid on;
     % Plot the compressed signal.
     subplot(2,1,2);
-    plot(t(1:compression:end),x_compressed);
+    plot(t_new,x);
     title('Compressed Signal');
     xlabel('Time');
     ylabel('Amplitude');
@@ -240,11 +239,18 @@ elseif operation == 7 % First derivative of the signal.
     grid on;
     % Plot first derivatve of the signal.
     subplot(2,1,2);
-    plot(t(1:end-1),dx);
+    plot(t,dx); % if there is error replace t( Start_time: End_time - 1 ) >> t
     title('First Derivative of Signal');
     xlabel('Time');
     ylabel('Amplitude');
     grid on;    
 elseif operation == 8 % None. 
     % Perform no operation on the signal.
+	% Plot the original signal without any change.
+    plot(t,x);
+    title('Original Signal');
+    xlabel('Time');
+    ylabel('Amplitude');
+    grid on;
+	
 end
