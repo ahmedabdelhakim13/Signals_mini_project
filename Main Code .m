@@ -84,11 +84,17 @@ for i=1:NO_Break_points+1
 
         elseif type == 6
             amp=input('\nenter the amplitude: ');
-            x_part=amp*sinc(t_part);
+            phaseshift=input('\nenter the phase shift: ');
+            x_part=amp*(sin(pi*(t_part+phaseshift))./(pi*(t_part+phaseshift)));
 
 
 
         elseif type == 7    
+            amp=input('\nenter the amplitude: ');
+            width=input('\nenter the width: ');
+            r=width/2;
+            phaseshift=input('\nenter the phase shift');
+            x_part=(amp*(1-(1/r)*abs(t_part+phaseshift))).*(abs(t_part+phaseshift)<=r);
 
 
 
@@ -96,22 +102,22 @@ for i=1:NO_Break_points+1
         end
         %when i =1 this means we're in the first region so we put all the remaining regions with zeros
         if i == 1 
-            Region_After = t_final-Position(1,i+1);
-            x_After = zeros(1,(t_final-Position(1,i+1))*Sampling_Frequency);
+            Region_After = End_time-Position(1,i+1);
+            x_After = zeros(1,Region_After*Sampling_Frequency);
             x_total = [x_part x_After];
             x = x + x_total;
         %when i =breakpoints+1 this means we're in the last region so we put all the remaining regions with zeros
         elseif i == NO_Break_points+1
-            Region_Before = Position(1,i)-t_start;
-            x_Before = zeros(1, (Position(1,i)-t_start)*Sampling_Frequency);
+            Region_Before = Position(1,i)-Start_time;
+            x_Before = zeros(1,Region_Before*Sampling_Frequency);
             x_total= [x_Before x_part];
             x = x + x_total ;
         %else means we're in a middle region so we put before and after regions with zeros
         else
-            Region_Before = Position(1,i)-t_start;
-            Region_After = t_final-Position(1,i+1);
-            x_Before = zeros(1, (Position(1,i)-t_start)*Sampling_Frequency);
-            x_After = zeros(1,(t_final-Position(1,i+1))*Sampling_Frequency);
+            Region_Before = Position(1,i)-Start_time;
+            Region_After = End_time-Position(1,i+1);
+            x_Before = zeros(1,Region_Before*Sampling_Frequency);
+            x_After = zeros(1,Region_After*Sampling_Frequency);
             x_total= [x_Before x_part x_After];
             x = x + x_total ;
         end
