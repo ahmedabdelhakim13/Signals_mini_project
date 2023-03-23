@@ -1,103 +1,125 @@
-%
+clear all;
+clc;
 Sampling_Frequency = input('Please enter the sampling frequency in Hz:');
 
-while Sampling_Frequency==0
+while (Sampling_Frequency <= 0)
 Sampling_Frequency = input('Please enter the sampling frequency in Hz:');
 end
 
-ts=1/Sampling_Frequency;
+
 
 Start_time = input('Please enter the start time:');
 End_time= input('Please enter the end time:');
 
 while (End_time <= Start_time)
-   disp('the End_time must be greater than the start\n');
+   disp('the End_time must be greater than the start');
          Start_time = input('Please enter the start time:');
          End_time = input('Please enter the end time:');
 end
-
-t=Start_time:ts:End_time;
+samples=(End_time-Start_time)*Sampling_Frequency;
+t=linspace(Start_time,End_time,samples);
 
 NO_Break_points = input('Please enter Number of break points:');
-
-
-if NO_Break_points>0
-    
-      Position=zeros(1,NO_Break_points);
-
-      for i=1:NO_Break_points+1
-
-        Position(i)=input(['Please enter the position of the break point',num2str(i),'at t=:']);
-
-        while ( Position(i)<= Start_time || Position(i)>= End_time )
-            Position(i)=input('you entered an incorrect breakpoint\nthe break point must be between the start time and the end time');
-        end
-
-        mm=[Start_time Position End_time ]; % array stores the start time and the end time and the break points
-
-      end
-    
-else
-       mm=[Start_time End_time ];
+ %to make sure that the number of break points is a positive integer 
+while (NO_Break_points < 0 || mod(NO_Break_points,1) ~= 0 )
+    fprintf('number of break points must be a positive integer\n');
+    NO_Break_points = input('Please enter Number of break points:');
 end
+   
+% array that carries the start time, poisitons of break points and end time
+Position=zeros(1,NO_Break_points+2);
+Position(1,1) = Start_time;
+Position(1,NO_Break_points+2) = End_time;
 
-x=zeros(1,length(t));
+for i=2:NO_Break_points+1
+    
+     Position(i)=input(['Please enter the position of the break point ',num2str(i-1),' at t=:']);    
+     while ( Position(i)<= Start_time || Position(i)>= End_time )
+          fprintf('you entered an incorrect breakpoint\nthe break point must be between the start time and the end time\n');
+          Position(i)=input(['Please enter the position of the break point ',num2str(i-1),' at t=:']);
+     end
+end
+    
+x=zeros(1,samples);
 
 for i=1:NO_Break_points+1
+    %start time will always be within the array position as we increment it by 1
+    t_start = Position(1,i);
+    %final time will always be the time after the start time since position
+    %contains the start time followed by time of the first break point and then the second and so on...
+    t_final = Position(1,i+1);
+    %length of the time period of each region 
+    t_part = linspace(t_start,t_final,(t_final-t_start)*Sampling_Frequency);
     
-     t_start=find( ( ( t-mm(i) )>=0 ),1 );
-    
-    if i==(NB+1)
-        t_finalf=find( ( ( t-mm(i+1) )<=0),1,'last');
-    else
-        t_final=find( ( ( t-mm(i+1) )<0),1,'last');
-    end
-    
-    
-    t_part=t(t_start:t_final); % this expresses the part of the time of each region
-   
     type=input('enter the number of the specification of the signal you want:\n 1)DC \n 2)RAMP \n 3)General order polynomial \n 4)EXPONENTIAL \n 5)SINUSOIDAL \n 6)sinc \n 7)triangular pulse\n');
         if type == 1
             amp=input('enter the amplitude');
-            x(t_start:t_final)=amp*ones( 1,length(t_part) );
+            x_part=amp*ones( 1,(t_final-t_start)*Sampling_Frequency );
 
         elseif type == 2
             slope=input('enter the slope');
             intercept=input('enter the intercepted part of y axis:');
-            x(t_start:t_final)=slope*t_part+intercept;
+            x_part=slope*t_part+intercept;
 
         elseif type == 3
             amp=input('\nenter the amplitude:');
             power=input('\nEnter the power: ');
             intercept=input('\nenter the intercepted part of y axis:');
-            x(t_start:t_final)=amp*(t_part.^power)+intercept;
+            x_part=amp*(t_part.^power)+intercept;
 
 
         elseif type == 4
             amp=input('\nenter the amplitude: ');
             exponent=input('\nEnter the exponent: ');
-            x(t_start:t_final)= amp*exp(expn*t_part);
+            x_part= amp*exp(expn*t_part);
             
 
         elseif type == 5
             amp=input('\nenter the amplitude: ');
-            freq=input('\nenter the frequency: ');
+            freq=input('\nenter the frequency');
             phaseshift=input('\nenter the phase shift: ');
-            x(t_start:t_final)= amp*sin(2*pi*freq*t_part+phaseshift);
+            x_part= amp*sin(2*pi*freq*t_part+phaseshift);
 
 
 
         elseif type == 6
             amp=input('\nenter the amplitude: ');
-            x(t_start:t_final)=amp*sinc(t_part);
+            phaseshift=input('\nenter the phase shift: ');
+            x_part=amp*(sin(pi*(t_part+phaseshift))./(pi*(t_part+phaseshift)));
 
 
 
         elseif type == 7    
+            amp=input('\nenter the amplitude: ');
+            width=input('\nenter the width: ');
+            r=width/2;
+            phaseshift=input('\nenter the phase shift');
+            x_part=(amp*(1-(1/r)*abs(t_part+phaseshift))).*(abs(t_part+phaseshift)<=r);
 
 
 
 
+        end
+        %when i =1 this means we're in the first region so we put all the remaining regions with zeros
+        if i == 1 
+            Region_After = End_time-Position(1,i+1);
+            x_After = zeros(1,Region_After*Sampling_Frequency);
+            x_total = [x_part x_After];
+            x = x + x_total;
+        %when i =breakpoints+1 this means we're in the last region so we put all the remaining regions with zeros
+        elseif i == NO_Break_points+1
+            Region_Before = Position(1,i)-Start_time;
+            x_Before = zeros(1,Region_Before*Sampling_Frequency);
+            x_total= [x_Before x_part];
+            x = x + x_total ;
+        %else means we're in a middle region so we put before and after regions with zeros
+        else
+            Region_Before = Position(1,i)-Start_time;
+            Region_After = End_time-Position(1,i+1);
+            x_Before = zeros(1,Region_Before*Sampling_Frequency);
+            x_After = zeros(1,Region_After*Sampling_Frequency);
+            x_total= [x_Before x_part x_After];
+            x = x + x_total ;
         end
 end
 
@@ -247,4 +269,10 @@ elseif operation == 7 % First derivative of the signal.
     grid on;    
 elseif operation == 8 % None. 
     % Perform no operation on the signal.
+    % Plot the original signal.
+    plot(t,x);
+    title('Original Signal');
+    xlabel('Time');
+    ylabel('Amplitude');
+    grid on;
 end
