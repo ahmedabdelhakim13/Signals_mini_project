@@ -170,7 +170,7 @@ elseif operation == 3 % Time Shifting.
     % Taking the shift value from the user.
     shift = input('Enter the shift value: ');
     % Shift the signal.
-    x_shifted = circshift( x , shift); 
+    t_new= t + shift; 
     % Plot the original signal.
     subplot(2,1,1);
     plot(t,x);
@@ -180,7 +180,7 @@ elseif operation == 3 % Time Shifting.
     grid on;
     % Plot the shifted signal.
     subplot(2,1,2);
-    plot(t,x_shifted);
+    plot(t_new,x);
     title('Time Shifted signal');
     xlabel('Time');
     ylabel('Amplitude');
@@ -188,30 +188,31 @@ elseif operation == 3 % Time Shifting.
     
 elseif operation == 4  % Expanding the signal.
     % Ask the user for the expanding value.
-    expanding = input('Enter the expanding value: ');
-    % Expand the signal.
-    ts_new = ts * expanding;
-    t_new = Start_time : ts_new : End_time;
-    x_expanded = interp( x , expanding);
-    % Plot the original signal.
+    expansion = input('Enter the expansion value: ');
+
+    % Compute the new sample rate
+    x_new=resample(x,expansion,1);
+    t_new=linspace(Start_time * expansion , End_time *expansion ,(End_time * expansion - Start_time * expansion)*Sampling_Frequency);
+    % Plot the original and expanded signals
     subplot(2,1,1);
-    plot(t,x);
+    plot(t, x);
     title('Original Signal');
-    xlabel('Time');
+    xlabel('Time (s)');
     ylabel('Amplitude');
     grid on;
-    % Plot the expanded signal.
     subplot(2,1,2);
-    plot(t_new,x_expanded);
-    title('Time Expanded signal');
-    xlabel('Time');
+    plot(t_new, x_new );
+    title('Expanded Signal');
+    xlabel('Time (s)');
     ylabel('Amplitude');
     grid on;
     
 elseif operation == 5 % Compressing the signal.
     % Ask user to enter a compressing value.
     compression = input('Enter the compressing value: ');
-	t_new = t / compression ;
+	% Compression
+    x_new = downsample( x , compression );
+    t_new=linspace(Start_time / compression , End_time / compression ,(End_time / compression - Start_time / compression)*Sampling_Frequency);
     % Plot the original signal.
     subplot(2,1,1);
     plot(t,x);
@@ -221,7 +222,7 @@ elseif operation == 5 % Compressing the signal.
     grid on;
     % Plot the compressed signal.
     subplot(2,1,2);
-    plot(t_new,x);
+    plot(t_new,x_new);
     title('Compressed Signal');
     xlabel('Time');
     ylabel('Amplitude');
@@ -251,7 +252,8 @@ elseif operation == 6 % Clipping the signal.
     grid on;
 elseif operation == 7 % First derivative of the signal.   
     % Calculate the first derivative of the signal
-    dx = diff(x)./diff(t);
+    ts = 1/Sampling_Frequency;
+    dx = diff(x)/ts;
     % Plot the original signal.
     subplot(2,1,1);
     plot(t,x);
@@ -261,7 +263,7 @@ elseif operation == 7 % First derivative of the signal.
     grid on;
     % Plot first derivatve of the signal.
     subplot(2,1,2);
-    plot(t,dx); % if there is error replace t( Start_time: End_time - 1 ) >> t
+    plot(t( 1 : end - 1 ),dx); 
     title('First Derivative of Signal');
     xlabel('Time');
     ylabel('Amplitude');
