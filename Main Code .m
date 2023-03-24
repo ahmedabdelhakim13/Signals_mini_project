@@ -71,7 +71,7 @@ for i=1:NO_Break_points+1
         elseif type == 4
             amp=input('\nenter the amplitude: ');
             exponent=input('\nEnter the exponent: ');
-            x_part= amp*exp(expn*t_part);
+            x_part= amp*exp(exponent*t_part);
             
 
         elseif type == 5
