@@ -30,12 +30,15 @@ title('Frequency angle representation');
 
 %channels
 % Define the impulse responses
-h1 = [1 zeros(1, N-1)]; % Delta function
+h1 = [1 zeros(1, N-1)].*t; % Delta function
 h2 = exp(-2*pi*5000*t); % exp(-2pi*5000t)
 h3 = exp(-2*pi*1000*t); % exp(-2pi*1000t)
-%h4=
+h4= [2 0 1];
 %implementation of the channels
-
+figure;
+subplot(2,2,1);
+plot(t,h1);
+%%
 channels=input('Enter the number of the channel you want to perform on the signal : \n 1)Delta function  \n 2)exp(-2pi*5000t) \n 3)exp(-2pi*1000t)\n 4)impulse response \n');  
 
 
