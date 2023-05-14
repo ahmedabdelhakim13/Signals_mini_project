@@ -1,14 +1,19 @@
+%reading the sound
 [y,f_s] = audioread('gamed.mp3');
 sound(y,f_s);
+%time representation
 N = length(y);
 t=linspace(0,N/f_s,N);
-figure;
-plot(t,y)
+subplot(2,1,1);
+plot(t,y);
+xlabel('Time');
+ylabel('sound');
+title('Time representation')
 clear sound
-
-
-
-f=linspace(0,f_s,1024);
-Y=abs(fft(y,1024));
-figure;
-plot(f(1:1024), Y(1:1024));
+%frequencyrepresentation
+Y=fftshift(fft(y));
+subplot(2,1,2);
+plot(Y);
+xlabel('Frequency');
+ylabel('sound');
+title('Frequency representation');
