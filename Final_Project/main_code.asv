@@ -1,12 +1,12 @@
 %reading the sound
 [x,f_s] = audioread('gamed.mp3');
+%play the sound
 sound(x,f_s);
-
 %time representation
-N = length(x);
-t=linspace(0,N/f_s,N);
+N = length(x);  %length of x
+t=linspace(0,N/f_s,N); %time 
 figure;
-plot(t,x);
+plot(t,x); %origional sound in time
 xlabel('Time');
 ylabel('sound');
 title('Time representation')
@@ -19,12 +19,12 @@ X_phase = angle(X);
 fvec=linspace(-f_s/2,f_s/2,N);
 figure;
 subplot(2,1,1)
-plot(fvec,X_magnitude);
+plot(fvec,X_magnitude); %origional sound in frequency
 xlabel('Frequency');
 ylabel('sound');
 title('Frequency magnitude representation');
 subplot(2,1,2)
-plot(fvec,X_phase);
+plot(fvec,X_phase); %origional sound i
 xlabel('Frequency ');
 ylabel('sound');
 title('Frequency angle representation');
@@ -39,8 +39,8 @@ h3 = exp(-2*pi*1000*t); % exp(-2pi*1000t)
 
 % Perform convolution based on the selected channel
 if channels==1   
-    
-    y = conv(x, h1');
+    z = x(:);
+    y = conv(z, h1');
     
 elseif channels==2
     y = conv(x, h2');
