@@ -6,6 +6,7 @@ sound(y,f_s);
 
 N = length(y);
 t=linspace(0,N/f_s,N);
+figure;
 plot(t,y);
 xlabel('Time');
 ylabel('sound');
@@ -18,6 +19,7 @@ Y=fftshift(fft(y));
 Y_magnitude= abs(Y);
 Y_phase = angle(Y);
 fvec=linspace(-f_s/2,f_s/2,N);
+figure;
 subplot(2,1,1)
 plot(fvec,Y_magnitude);
 xlabel('Frequency');
