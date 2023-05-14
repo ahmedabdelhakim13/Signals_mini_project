@@ -37,7 +37,6 @@ channels=input('Enter the number of the channel you want to perform on the signa
 if channels==1
     
 elseif channels==2
-elseif channels==3
-elseif channels==4
-end
+    elseif channels==2
+ elseif channels==2
  
