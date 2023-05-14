@@ -1,34 +1,42 @@
-%reading the sound
+clear all;
+clc;
+%1)Transmitter
+
+%Reading the sound.
 [x,f_s] = audioread('3arfeeen.mp3');
-%play the sound
+%Play the sound.
 sound(x,f_s);
-%time representation
-N = length(x);  %length of x
-t=linspace(0,N/f_s,N); %time 
+
+%Time representation.
+N = length(x);  %Length of x.
+t=linspace(0,N/f_s,N); %Time.
 subplot(3,1,1)
-plot(t,x); %origional sound in time
+plot(t,x); %Origional sound in time.
 xlabel('Time');
 ylabel('sound');
 title('Time representation')
-clear sound
 
-%frequencyrepresentation
+%Frequency Representation.
 X=fftshift(fft(x));
 X_magnitude= abs(X);
 X_phase = angle(X);
 fvec=linspace(-f_s/2,f_s/2,N);
 subplot(3,1,2)
-plot(fvec,X_magnitude); %origional sound in frequency
+plot(fvec,X_magnitude); %Origional sound in frequency.
 xlabel('Frequency');
 ylabel('sound');
 title('Frequency magnitude representation');
 subplot(3,1,3)
-plot(fvec,X_phase); %origional sound in phase
+plot(fvec,X_phase); %Origional sound in phase.
 xlabel('Frequency ');
 ylabel('sound');
 title('Frequency angle representation');
 
-%channels
+clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
+%it whenever you want).
+
+%2)Channels
+
 % Define the impulse responses
 h1 = [1 zeros(1, N-1)]; % Delta function
 h2 = exp(-2*pi*5000*t); % exp(-2pi*5000t)
@@ -36,7 +44,7 @@ h3 = exp(-2*pi*1000*t); % exp(-2pi*1000t)
 h4 = zeros(size(t));
 h4(t == 0) = 2;
 h4(t == 1) = 1;
-%implementation of the channels
+%Implementation of the Channels
 figure;
 subplot(2,2,1);
 plot(h1);
@@ -51,6 +59,7 @@ plot(h3);
 subplot(2,2,4);
 plot(h4);
 
+%Taking the channel to be performed on the signal
 channels=input('Enter the number of the channel you want to perform on the signal : \n 1)Delta function  \n 2)exp(-2pi*5000t) \n 3)exp(-2pi*1000t)\n 4)impulse response \n');  
 
 if channels==1   
@@ -78,4 +87,43 @@ title('Convolved sound message');
 xlabel('Time (s)');
 ylabel('Amplitude');
 
- 
+%3)Adding Noise.
+
+%Taking Sigma.
+Sigma=input('Enter the sigama (Noise) to be introduced to the channel:');  
+%Introduce noise( Gaussian Distribution noise with zero mean and standard
+%deviation = sigma ).
+Noise = Sigma * rand( 1 , length(x));
+%Nosied signal.
+x= x + Noise(:);
+%Play the sound after adding noise.
+sound(x,f_s);
+
+%Plot the noised signal in time domain.
+New_N = length(x);  %Length of x
+New_t=linspace(0,New_N/f_s,New_N); %Time 
+figure;
+subplot(3,1,1)
+plot(New_t,x); 
+xlabel('Time');
+ylabel('Noised sound');
+title('Time representation of Noised signal.')
+
+%Plot the noised signal in Frequency domain.
+Noised=fftshift(fft(x));
+Noised_magnitude= abs(Noised);
+Noised_phase = angle(Noised);
+NoisedFreqVec=linspace(-f_s/2,f_s/2,length(Noised));
+subplot(3,1,2)
+plot(NoisedFreqVec,Noised_magnitude); 
+xlabel('Frequency');
+ylabel('Noised Signal');
+title('Frequency magnitude of Noised signal.');
+subplot(3,1,3)
+plot(NoisedFreqVec,Noised_phase); %Origional sound in phase.
+xlabel('Frequency ');
+ylabel('sound');
+title('Frequency angle of Noised signal.');
+
+clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
+%it whenever you want).
