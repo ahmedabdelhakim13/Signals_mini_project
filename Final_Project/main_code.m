@@ -3,7 +3,7 @@ clc;
 %1)Transmitter
 
 %Reading the sound.
-[x,f_s] = audioread('3arfeeen.mp3');
+[x,f_s] = audioread('Kholyo JR.mp3');
 %Play the sound.
 sound(x,f_s);
 
