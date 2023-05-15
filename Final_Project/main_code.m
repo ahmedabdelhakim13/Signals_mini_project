@@ -31,7 +31,10 @@ plot(fvec,X_phase); %Origional sound in phase.
 xlabel('Frequency ');
 ylabel('sound');
 title('Frequency angle representation');
-
+flag = 0;
+while flag ~= 1
+    flag = input('Type 1 to stop the sound');
+end
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
 %*********************************************************************************************************************************************
@@ -124,19 +127,34 @@ plot(NoisedFreqVec,Noised_phase); %Origional sound in phase.
 xlabel('Frequency ');
 ylabel('sound');
 title('Frequency angle of Noised signal.');
-
+flag2 = 0;
+while flag2 ~= 1
+    flag2 = input('Type 1 to stop the sound');
+end
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
 
 %**********************************************************************************************************************************************
 %RECIEVER
-samplePerHz = N/f_s;
+samplePerHz = New_N/f_s;
 
 freqDiff = f_s/2 - 3400;
-samplesFiltered1 = samplePerHz * freqDiff;
-samplesFiltered2 = length(Noised) - samplesFiltered1 + 1;
-Noised_magnitude([1:samplesFiltered1 samplesFiltered2:end])=0;
-
+samplesFiltered1 = uint32(samplePerHz * freqDiff);
+samplesFiltered2 = uint32(length(Noised) - samplesFiltered1 + 1);
+Noised([1:samplesFiltered1 samplesFiltered2:end])=0;
+NoisedMagAfterFilter=abs(Noised);
+NoisedAfterFilterTime=ifft(ifftshift(Noised));
+sound(NoisedAfterFilterTime,f_s);
 figure;
-plot(NoisedFreqVec,Noised_magnitude);
-title('filtered signal');
+subplot(2,1,1);
+plot(NoisedFreqVec,NoisedMagAfterFilter);
+title('filtered signal in frequency domain');
+subplot(2,1,2);
+plot(New_t,NoisedAfterFilterTime);
+title('filtered signal in time domain');
+flag3 = 0;
+while flag3 ~= 1
+    flag3 = input('Type 1 to stop the sound');
+end
+clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
+%it whenever you want).
