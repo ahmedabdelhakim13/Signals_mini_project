@@ -34,7 +34,7 @@ title('Frequency angle representation');
 
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
-
+%*********************************************************************************************************************************************
 %2)Channels
 
 % Define the impulse responses
@@ -43,7 +43,7 @@ h2 = exp(-2*pi*5000*t); % exp(-2pi*5000t)
 h3 = exp(-2*pi*1000*t); % exp(-2pi*1000t)
 h4 = zeros(size(t));
 h4(t == 0) = 2;
-h4(t == 1) = 1;
+h4(t == 1) = 0.5;
 %Implementation of the Channels
 figure;
 subplot(2,2,1);
@@ -86,31 +86,31 @@ plot(t, y);
 title('Convolved sound message');
 xlabel('Time (s)');
 ylabel('Amplitude');
-
+%**********************************************************************************************************************************
 %3)Adding Noise.
 
 %Taking Sigma.
 Sigma=input('Enter the sigama (Noise) to be introduced to the channel:');  
 %Introduce noise( Gaussian Distribution noise with zero mean and standard
 %deviation = sigma ).
-Noise = Sigma * randn(size(x));
+Noise = Sigma * randn(size(y));
 %Nosied signal.
-x= x + Noise;
+y= y + Noise;
 %Play the sound after adding noise.
-sound(x,f_s);
+sound(y,f_s);
 
 %Plot the noised signal in time domain.
-New_N = length(x);  %Length of x
+New_N = length(y);  %Length of x
 New_t=linspace(0,New_N/f_s,New_N); %Time 
 figure;
 subplot(3,1,1)
-plot(New_t,x); 
+plot(New_t,y); 
 xlabel('Time');
 ylabel('Noised sound');
 title('Time representation of Noised signal.')
 
 %Plot the noised signal in Frequency domain.
-Noised=fftshift(fft(x));
+Noised=fftshift(fft(y));
 Noised_magnitude= abs(Noised);
 Noised_phase = angle(Noised);
 NoisedFreqVec=linspace(-f_s/2,f_s/2,length(Noised));
@@ -127,12 +127,16 @@ title('Frequency angle of Noised signal.');
 
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
+
+%**********************************************************************************************************************************************
 %RECIEVER
 samplePerHz = N/f_s;
+
 freqDiff = f_s/2 - 3400;
 samplesFiltered1 = samplePerHz * freqDiff;
 samplesFiltered2 = length(Noised) - samplesFiltered1 + 1;
 Noised_magnitude([1:samplesFiltered1 samplesFiltered2:end])=0;
+
 figure;
 plot(NoisedFreqVec,Noised_magnitude);
 title('filtered signal');
