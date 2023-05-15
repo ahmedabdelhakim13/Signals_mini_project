@@ -15,7 +15,6 @@ plot(t,x); %Origional sound in time.
 xlabel('Time');
 ylabel('sound');
 title('Time representation')
-clear sound;
 
 %Frequency Representation.
 X=fftshift(fft(x));
@@ -32,6 +31,9 @@ plot(fvec,X_phase); %Origional sound in phase.
 xlabel('Frequency ');
 ylabel('sound');
 title('Frequency angle representation');
+
+clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
+%it whenever you want).
 
 %2)Channels
 
@@ -84,15 +86,16 @@ plot(t, y);
 title('Convolved sound message');
 xlabel('Time (s)');
 ylabel('Amplitude');
+
 %3)Adding Noise.
 
 %Taking Sigma.
 Sigma=input('Enter the sigama (Noise) to be introduced to the channel:');  
 %Introduce noise( Gaussian Distribution noise with zero mean and standard
 %deviation = sigma ).
-Noise = Sigma * rand( 1 , length(x));
+Noise = Sigma * randn(size(x));
 %Nosied signal.
-x= x + Noise(:);
+x= x + Noise;
 %Play the sound after adding noise.
 sound(x,f_s);
 
@@ -122,3 +125,11 @@ xlabel('Frequency ');
 ylabel('sound');
 title('Frequency angle of Noised signal.');
 
+clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
+%it whenever you want).
+%RECIEVER
+samplePerHz = N/f_s;
+freqDiff = f_s/2 - 3400;
+samplesFiltered1 = samplePerHz * freqDiff;
+samplesFiltered2 = 
+Noised([1:samplesFiltered1 ])=0;

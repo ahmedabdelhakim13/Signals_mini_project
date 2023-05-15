@@ -93,9 +93,9 @@ ylabel('Amplitude');
 Sigma=input('Enter the sigama (Noise) to be introduced to the channel:');  
 %Introduce noise( Gaussian Distribution noise with zero mean and standard
 %deviation = sigma ).
-Noise = Sigma * rand( 1 , length(x));
+Noise = Sigma * randn(size(x));
 %Nosied signal.
-x= x + Noise(:);
+x= x + Noise;
 %Play the sound after adding noise.
 sound(x,f_s);
 
@@ -127,3 +127,12 @@ title('Frequency angle of Noised signal.');
 
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
+%RECIEVER
+samplePerHz = N/f_s;
+freqDiff = f_s/2 - 3400;
+samplesFiltered1 = samplePerHz * freqDiff;
+samplesFiltered2 = length(Noised) - samplesFiltered1 + 1;
+Noised_magnitude([1:samplesFiltered1 samplesFiltered2:end])=0;
+figure;
+plot(NoisedFreqVec,Noised_magnitude);
+title('filtered signal');
