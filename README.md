@@ -1,5 +1,5 @@
 #  Signals mini project
-## alxandria university
+## alexandria university
 ## faculty of engineering
-## department of electronicds andcommunicaton
+## department of electronics and communicaton
 ## ECE 271(Signals ad Systems)
