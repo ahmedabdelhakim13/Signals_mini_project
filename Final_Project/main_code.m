@@ -31,9 +31,11 @@ plot(fvec,X_phase); %Origional sound in phase.
 xlabel('Frequency ');
 ylabel('sound');
 title('Frequency angle representation');
-flag = 0;
-while flag ~= 1
-    flag = input('Type 1 to stop the sound');
+
+status = "stop";
+forcestop = "mkmkm ";
+while ~(strcmp(status,forcestop))
+    forcestop = input('Type stop to stop the sound','s');
 end
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
@@ -59,8 +61,12 @@ xlabel('time');
 ylabel('channel 2');
 subplot(2,2,3);
 plot(h3);
+xlabel('time');
+ylabel('channel 3');
 subplot(2,2,4);
 plot(h4);
+xlabel('time');
+ylabel('channel 4');
 
 %Taking the channel to be performed on the signal
 channels=input('Enter the number of the channel you want to perform on the signal : \n 1)Delta function  \n 2)exp(-2pi*5000t) \n 3)exp(-2pi*1000t)\n 4)impulse response \n');  
@@ -103,7 +109,7 @@ y= y + Noise;
 sound(y,f_s);
 
 %Plot the noised signal in time domain.
-New_N = length(y);  %Length of x
+New_N = length(y);  %Length of y
 New_t=linspace(0,New_N/f_s,New_N); %Time 
 figure;
 subplot(3,1,1)
@@ -127,9 +133,11 @@ plot(NoisedFreqVec,Noised_phase); %Origional sound in phase.
 xlabel('Frequency ');
 ylabel('sound');
 title('Frequency angle of Noised signal.');
-flag2 = 0;
-while flag2 ~= 1
-    flag2 = input('Type 1 to stop the sound');
+
+status2 = "stop";
+forcestop2 = "anything other than the word play";
+while ~(strcmp(status2,forcestop2))
+    forcestop2 = input('Type stop to stop the sound','s');
 end
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
@@ -152,9 +160,11 @@ title('filtered signal in frequency domain');
 subplot(2,1,2);
 plot(New_t,NoisedAfterFilterTime);
 title('filtered signal in time domain');
-flag3 = 0;
-while flag3 ~= 1
-    flag3 = input('Type 1 to stop the sound');
+
+status3 = "stop";
+forcestop3 = "anything other than the word play";
+while ~(strcmp(status3,forcestop3))
+    forcestop3 = input('Type stop to stop the sound','s');
 end
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
