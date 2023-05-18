@@ -14,28 +14,28 @@ subplot(3,1,1)
 plot(t,x); %Origional sound in time.
 xlabel('Time');
 ylabel('sound');
-title('Time representation')
+title('Signal in Time representation')
 
 %Frequency Representation.
 X=fftshift(fft(x));
 X_magnitude= abs(X);
 X_phase = angle(X);
-fvec=linspace(-f_s/2,f_s/2,N);
+fvec=linspace(-f_s/2,f_s/2,length(X));
 subplot(3,1,2)
 plot(fvec,X_magnitude); %Origional sound in frequency.
 xlabel('Frequency');
 ylabel('sound');
-title('Frequency magnitude representation');
+title('Signal Frequency magnitude representation');
 subplot(3,1,3)
 plot(fvec,X_phase); %Origional sound in phase.
 xlabel('Frequency ');
 ylabel('sound');
-title('Frequency angle representation');
+title('Signal Frequency angle representation');
 
 status = "stop";
 forcestop = "mkmkm ";
 while ~(strcmp(status,forcestop))
-    forcestop = input('Type stop to stop the sound','s');
+    forcestop = input('Type stop to stop the sound : ','s');
 end
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
@@ -72,34 +72,34 @@ ylabel('channel 4');
 channels=input('Enter the number of the channel you want to perform on the signal : \n 1)Delta function  \n 2)exp(-2pi*5000t) \n 3)exp(-2pi*1000t)\n 4)impulse response \n');  
 
 if channels==1   
-    y = conv(x(:)', h1(:)');
+    y = conv(x(:)', h1(:));
 elseif channels==2
-    y = conv(x(:)', h2(:)');
+    y = conv(x(:)', h2(:));
 elseif channels==3
-    y = conv(x(:)', h3(:)');
+    y = conv(x(:)', h3(:));
 elseif channels==4
-    y = conv(x(:)', h4(:)');
+    y = conv(x(:)', h4(:));
 end
 
 % Plot the result
 figure;
 subplot(2,1,1);
 plot(t, x);
-title('Original sound message');
+title('Original signal');
 xlabel('Time (s)');
 ylabel('Amplitude');
 
-t=linspace(0,length(y)/f_s,length(y));
+t_conv=linspace(0,length(y)/f_s,length(y));
 subplot(2,1,2);
-plot(t, y);
-title('Convolved sound message');
+plot(t_conv, y);
+title('Convolved signal');
 xlabel('Time (s)');
 ylabel('Amplitude');
 %**********************************************************************************************************************************
 %3)Adding Noise.
 
 %Taking Sigma.
-Sigma=input('Enter the sigama (Noise) to be introduced to the channel:');  
+Sigma=input('Enter the sigama (Noise) to be introduced to the channel: ');  
 %Introduce noise( Gaussian Distribution noise with zero mean and standard
 %deviation = sigma ).
 Noise = Sigma * randn(size(y));
@@ -137,7 +137,7 @@ title('Frequency angle of Noised signal.');
 status2 = "stop";
 forcestop2 = "anything other than the word play";
 while ~(strcmp(status2,forcestop2))
-    forcestop2 = input('Type stop to stop the sound','s');
+    forcestop2 = input('Type stop to stop the sound : ','s');
 end
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
@@ -164,7 +164,7 @@ title('filtered signal in time domain');
 status3 = "stop";
 forcestop3 = "anything other than the word play";
 while ~(strcmp(status3,forcestop3))
-    forcestop3 = input('Type stop to stop the sound','s');
+    forcestop3 = input('Type stop to stop the sound : ','s');
 end
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
