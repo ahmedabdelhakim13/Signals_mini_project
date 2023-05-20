@@ -3,7 +3,7 @@ clc;
 %1)Transmitter
 
 %Reading the sound.
-[x,f_s] = audioread('gamed.mp3');
+[x,f_s] = audioread('Anne-Marie - To Be Young [Performance Video](MP3_70K)_mixed.mp3');
 %Play the sound.
 sound(x,f_s);
 
@@ -32,18 +32,13 @@ xlabel('Frequency ');
 ylabel('sound');
 title('Signal Frequency angle representation');
 
-<<<<<<< HEAD
+
 status1 = "stop";
 forcestop1 = "anything other than the word play";
 while ~(strcmp(status1,forcestop1))
     forcestop1 = input('Type stop to stop the sound','s');
-=======
-status = "stop";
-forcestop = "mkmkm ";
-while ~(strcmp(status,forcestop))
-    forcestop = input('Type stop to stop the sound : ','s');
->>>>>>> d869904346173d8431d78b230ca2758dfead9e92
 end
+
 clear sound;%Stop the sound (Can be replaced by typing this in command window to stop
 %it whenever you want).
 %*********************************************************************************************************************************************
