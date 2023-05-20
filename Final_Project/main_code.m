@@ -2,8 +2,13 @@ clear all;
 clc;
 %1)Transmitter
 
-%Reading the sound.
-[x,f_s] = audioread('Anne-Marie - To Be Young [Performance Video](MP3_70K)_mixed.mp3');
+Input=input('Enter the number the you want to play : \n 1)Sound  \n 2)Music \n');  
+if Input==1   
+   [x,f_s] = audioread('Kholyo JR.mp3');
+elseif Input==2
+   [x,f_s] = audioread('Anne-Marie - To Be Young [Performance Video](MP3_70K)_mixed.mp3');
+end
+
 %Play the sound.
 sound(x,f_s);
 
