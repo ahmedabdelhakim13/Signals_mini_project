@@ -2,8 +2,13 @@ clear all;
 clc;
 %1)Transmitter
 
-%Reading the sound.
-[x,f_s] = audioread('Kholyo JR.mp3');
+%Playing Sound or Music
+Input=input('Enter the number the you want to play : \n 1)Sound  \n 2)Music \n');  
+if Input==1   
+   [x,f_s] = audioread('85._45.mp3');
+elseif Input==2
+   [x,f_s] = audioread('gamed.mp3');
+end
 %Play the sound.
 sound(x,f_s);
 
