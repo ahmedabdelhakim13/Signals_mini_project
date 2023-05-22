@@ -156,7 +156,7 @@ samplesFiltered1 = uint32(samplePerHz * freqDiff);
 samplesFiltered2 = uint32(length(Noised) - samplesFiltered1 + 1);
 Noised([1:samplesFiltered1 samplesFiltered2:end])=0;
 NoisedMagAfterFilter=abs(Noised);
-NoisedAfterFilterTime=ifft(ifftshift(Noised));
+NoisedAfterFilterTime=real(ifft(ifftshift(Noised)));
 sound(NoisedAfterFilterTime,f_s);
 figure;
 subplot(2,1,1);
